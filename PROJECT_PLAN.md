@@ -60,8 +60,8 @@ counts as much as the ML.
   ├── README.md                 # portfolio landing page with result tables and links
   ├── pyproject.toml            # uv workspace
   ├── packages/
-  │   ├── core/                 # shared model code (attention, RoPE, sampling, ...)
-  │   └── evals/                # shared evaluation utilities
+  │   ├── core/                 # shared model code, extracted from P1 once P2 needs it
+  │   └── evals/                # shared evaluation utilities (from P7)
   ├── projects/
   │   ├── p1_mini_gpt/
   │   ├── p2_internals/
@@ -442,7 +442,7 @@ models and library releases, and note in the README which versions you used and 
 
 ## 11. Progress tracker
 
-- [ ] Week 0: repo, tooling, CI, README template
+- [x] Week 0: repo, tooling, CI, README template
 - [ ] P1 Swiss-multilingual mini-GPT
 - [ ] P2 LLM internals lab
 - [ ] P3 Domain adaptation
