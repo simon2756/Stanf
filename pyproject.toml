@@ -1,0 +1,60 @@
+[project]
+name = "stanf"
+version = "0.1.0"
+description = "LLM engineering portfolio following Stanford CME 295"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["mini-gpt"]
+
+[project.optional-dependencies]
+# By default torch comes from PyPI (CUDA build on Linux, CPU/MPS build on macOS).
+# `--extra cpu` swaps in the much smaller CPU-only Linux wheel (CI, machines without a GPU).
+# Pass it to every `uv sync` / `uv run`, otherwise uv switches back to the default build.
+cpu = ["torch>=2.5"]
+gpu = ["torch>=2.5"]
+# Corpus download and tokenizer study dependencies.
+data = ["mini-gpt[data]"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.0",
+    "pyright>=1.1.390",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.uv]
+package = false
+conflicts = [[{ extra = "cpu" }, { extra = "gpu" }]]
+
+[tool.uv.workspace]
+members = ["projects/*"]
+
+[tool.uv.sources]
+mini-gpt = { workspace = true }
+torch = [{ index = "pytorch-cpu", extra = "cpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "NPY", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"] # allow non-ASCII (umlauts, accents) in strings and comments
+
+[tool.ruff.lint.isort]
+known-first-party = ["mini_gpt"]
+
+[tool.pyright]
+include = ["projects"]
+typeCheckingMode = "basic"
+reportMissingTypeStubs = false
+
+[tool.pytest.ini_options]
+testpaths = ["projects"]
+addopts = "-q --import-mode=importlib"

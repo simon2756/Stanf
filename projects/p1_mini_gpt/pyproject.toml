@@ -1,0 +1,29 @@
+[project]
+name = "mini-gpt"
+version = "0.1.0"
+description = "P1: Swiss-multilingual mini-GPT and byte-level BPE tokenizer, written from scratch"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.9",
+    "numpy>=1.26",
+    "regex>=2024.9",
+    "torch>=2.5",
+    "tyro>=0.9",
+]
+
+[project.optional-dependencies]
+# Corpus download and the tokenizer comparison study.
+data = [
+    "datasets>=3.0",
+    "tiktoken>=0.8",
+    "tokenizers>=0.20",
+    "transformers>=4.46",
+]
+wandb = ["wandb>=0.18"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mini_gpt"]

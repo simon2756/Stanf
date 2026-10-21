@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.12"
+
+      - name: Install (CPU-only torch + data extras for type-checking)
+        run: uv sync --locked --extra cpu --extra data
+
+      - name: Lint
+        run: uv run --extra cpu --extra data ruff check .
+
+      - name: Format
+        run: uv run --extra cpu --extra data ruff format --check .
+
+      - name: Type-check
+        run: uv run --extra cpu --extra data pyright
+
+      - name: Tests
+        run: uv run --extra cpu --extra data pytest
